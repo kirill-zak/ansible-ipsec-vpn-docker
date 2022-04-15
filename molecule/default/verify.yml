@@ -1,0 +1,36 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Get information about env file
+    ansible.builtin.stat:
+      path: /root/vpn.env
+    register: env_file
+
+  - name: Does env file exist
+    assert:
+      that:
+        - env_file.stat.isreg
+
+  - name: Get information about IPSec vpn data volume
+    community.docker.docker_volume_info:
+      name: ipsec_vpn_ikev2_data
+    register: ipsec_vpn_ikev2_data_status
+
+  - name: Does IPSeec vpm data volume exist?
+    assert:
+      that:
+        - ipsec_vpn_ikev2_data_status.exists
+
+  - name: Get information about IPSec vpn container
+    community.docker.docker_container_info:
+      name: ipsec_vpn
+    register: ipsec_vpn_container_status
+
+  - name: Does IPSec vpn container exist?
+    assert:
+      that:
+        - ipsec_vpn_container_status.exists

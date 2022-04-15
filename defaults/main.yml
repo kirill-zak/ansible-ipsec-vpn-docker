@@ -1,0 +1,25 @@
+---
+# Common vars
+ipsec_vpn_docker_container_volume: ipsec_vpn_ikev2_data
+ipsec_vpn_docker_container_name: ipsec_vpn
+ipsec_vpn_docker_env_file_path: /root/vpn.env
+ipsec_vpn_docker_log_driver: none
+ipsec_vpn_docker_tag: latest
+
+# Common credentials
+ipsec_vpn_docker_psk:
+ipsec_vpn_docker_user:
+ipsec_vpn_docker_password:
+
+# Additional credentials
+ipsec_vpn_docker_additional_user_list:
+ipsec_vpn_docker_additional_password_list:
+
+# DNS vars
+ipsec_vpn_docker_dns_name:
+ipsec_vpn_docker_dns_server_1: 1.1.1.1
+ipsec_vpn_docker_dns_server_2: 1.0.0.1
+
+# IKEv2 vars
+ipsec_vpn_docker_ikev2_client_name:
+ipsec_vpn_docker_ikev2_protect_config: no
