@@ -1,0 +1,31 @@
+---
+- name: Create env file
+  ansible.builtin.template:
+    dest: "{{ ipsec_vpn_docker_env_file_path }}"
+    src: env.j2
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+
+- name: Create IPSec vpn ikev2 data volumes
+  community.docker.docker_volume:
+    name: "{{ ipsec_vpn_docker_container_volume }}"
+  changed_when: false
+
+- name: Create IPSec vpn container
+  community.docker.docker_container:
+    name: "{{ ipsec_vpn_docker_container_name }}"
+    image: "hwdsl2/ipsec-vpn-server:{{ ipsec_vpn_docker_tag }}"
+    state: started
+    restart_policy: unless-stopped
+    init: true
+    privileged: yes
+    env_file: "{{ ipsec_vpn_docker_env_file_path }}"
+    log_driver: "{{ ipsec_vpn_docker_log_driver }}"
+    published_ports:
+      - "500:500/udp"
+      - "4500:4500/udp"
+    volumes:
+      - "{{ ipsec_vpn_docker_container_volume }}:/etc/ipsec.d"
+      - "/lib/modules:/lib/modules:ro"
+  changed_when: false

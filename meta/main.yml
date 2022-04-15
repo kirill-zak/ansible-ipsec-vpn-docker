@@ -1,0 +1,32 @@
+---
+galaxy_info:
+  author: kirill_zak
+  role_name: ipsec_vpn_docker
+  description: An ansible role for run IPSec vpn in Docker container
+  company: https://kirill-zak.ru
+  license: MIT
+  min_ansible_version: "2.1"
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+        - bullseye
+    - name: EL
+      versions:
+        - "8"
+    - name: Fedora
+      versions:
+        - "35"
+    - name: Ubuntu
+      versions:
+        - bionic
+        - focal
+
+  galaxy_tags:
+    - docker
+    - vpn
+    - ipsec
+    - l2tp
+    - ikev2
+
+dependencies: []
