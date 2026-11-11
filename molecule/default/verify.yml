@@ -1,36 +1,38 @@
 ---
-# This is an example playbook to execute Ansible tests.
-
 - name: Verify
   hosts: all
-  gather_facts: false
   tasks:
-  - name: Get information about env file
-    ansible.builtin.stat:
-      path: /root/vpn.env
-    register: env_file
+    - name: Get information about the env file
+      ansible.builtin.stat:
+        path: /root/vpn.env
+      register: env_file
 
-  - name: Does env file exist
-    assert:
-      that:
-        - env_file.stat.isreg
+    - name: Does the env file exist?
+      ansible.builtin.assert:
+        that:
+          - env_file.stat.isreg
 
-  - name: Get information about IPSec vpn data volume
-    community.docker.docker_volume_info:
-      name: ipsec_vpn_ikev2_data
-    register: ipsec_vpn_ikev2_data_status
+    - name: Get information about the IPSec VPN data volume
+      community.docker.docker_volume_info:
+        name: ipsec_vpn_ikev2_data
+      register: ipsec_vpn_ikev2_data_status
 
-  - name: Does IPSeec vpm data volume exist?
-    assert:
-      that:
-        - ipsec_vpn_ikev2_data_status.exists
+    - name: Does the IPSec VPN data volume exist?
+      ansible.builtin.assert:
+        that:
+          - ipsec_vpn_ikev2_data_status.exists
 
-  - name: Get information about IPSec vpn container
-    community.docker.docker_container_info:
-      name: ipsec_vpn
-    register: ipsec_vpn_container_status
+    - name: Get information about the IPSec VPN container
+      community.docker.docker_container_info:
+        name: ipsec_vpn
+      register: ipsec_vpn_container_status
 
-  - name: Does IPSec vpn container exist?
-    assert:
-      that:
-        - ipsec_vpn_container_status.exists
+    - name: Does the IPSec VPN container exist?
+      ansible.builtin.assert:
+        that:
+          - ipsec_vpn_container_status.exists
+
+    - name: Is the IPSec VPN container running?
+      ansible.builtin.assert:
+        that:
+          - ipsec_vpn_container_status.container.State.Running
