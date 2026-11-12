@@ -1,20 +1,23 @@
-IPSec VPN docker
+ipsec_vpn_docker
 =========
 
-An Ansible role for run IPSec VPN in Docker container
+Setup and run an IPSec/L2TP/IKEv2 VPN server in a Docker container
 
 ## Support distributive
 
-* CentOS 8
-* Debian 10 (Buster)
-* Debian 11 (Bullseye)
-* Fedora 35
-* Ubuntu 18.04 (Bionic Beaver)
-* Ubuntu 20.04 (Focal Fossa)
+* AlmaLinux `8.x` (`8.5` – `8.10`), `9.x` (`9.0` – `9.8`)
+* Alpine Linux `3.22.x`, `3.23.x`
+* Debian `12` (`Bookworm`), `13` (`Trixie`)
+* Fedora `43`, `44`
+* Rocky Linux `8.x` (`8.5` – `8.9`), `9.x` (`9.0` – `9.8`)
+* Ubuntu `22.04` (`Jammy Jellyfish`), `24.04` (`Noble Numbat`), `26.04`
 
 ## Requirements
 
-Docker engine
+- Docker engine (installed by the dependency role `kirill_zak.docker`).
+- Python 3 `requests` library on the target host (`python3-requests`, or
+  `py3-requests` on Alpine): required by the `community.docker` modules
+  used by the role.
 
 ## Role Variables
 
@@ -23,27 +26,27 @@ Docker engine
 - `ipsec_vpn_docker_container_name`: Name of container. Default value: `ipsec_vpn`
 - `ipsec_vpn_docker_env_file_path`: Path of env file. Default value: `/root/vpn.env`
 - `ipsec_vpn_docker_log_driver`: Name of log driver. Default value: `none` (Disabled logs)
-- `ipsec_vpn_docker_tag`: Tag of image. Tag found at # https://hub.docker.com/r/hwdsl2/ipsec-vpn-server/tags
+- `ipsec_vpn_docker_tag`: Tag of image. Tag found at https://hub.docker.com/r/hwdsl2/ipsec-vpn-server/tags
 
 ### Common credentials vars
-- `ipsec_vpn_docker_psk`: IPSec PSK key. Default value is empty. For more information # https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L8
-- `ipsec_vpn_docker_user`: IPSec user. Default value is empty. For more information # https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L9
-- `ipsec_vpn_docker_password`: IPSec password. Default value is empty. For more information #https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L10
+- `ipsec_vpn_docker_psk`: IPSec PSK key. Default value is empty. For more information: https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L8
+- `ipsec_vpn_docker_user`: IPSec user. Default value is empty. For more information: https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L9
+- `ipsec_vpn_docker_password`: IPSec password. Default value is empty. For more information: https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L10
 
 Leave any of common credentials empty for auto generate
 
 ### Additional credentials
-- `ipsec_vpn_docker_additional_user_list`: List of additional users. Default value is empty. For more information # https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L16
-- `ipsec_vpn_docker_additional_password_list`: List of passwords for additional users. Default value is empty. For more information # https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L17
+- `ipsec_vpn_docker_additional_user_list`: List of additional users. Default value is empty. For more information: https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L16
+- `ipsec_vpn_docker_additional_password_list`: List of passwords for additional users. Default value is empty. For more information: https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L17
 
 ### DNS vars
-- `ipsec_vpn_docker_dns_name`: DNS Name of VPN server. Default value is empty. For more information # https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L21
+- `ipsec_vpn_docker_dns_name`: DNS name of VPN server. Default value is empty. For more information: https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L21
 - `ipsec_vpn_docker_dns_server_1`: First DNS server. Default value: `1.1.1.1`.
 - `ipsec_vpn_docker_dns_server_2`: Second DNS server. Default value: `1.0.0.1`
 
 ### IKEv2 vars
-- `ipsec_vpn_docker_ikev2_client_name`: Name of IKEv2 clients. Default value is empty. For more information # https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L26
-- `ipsec_vpn_docker_ikev2_protect_config`: Protect IKEv2 client configuration by password toggle. Default value: `no` For more information # https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L37
+- `ipsec_vpn_docker_ikev2_client_name`: Name of IKEv2 clients. Default value is empty. For more information: https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L26
+- `ipsec_vpn_docker_ikev2_protect_config`: Protect IKEv2 client configuration by password toggle. Default value: `no`. For more information: https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/vpn.env.example#L37
 
 ## Dependencies
 
@@ -51,7 +54,7 @@ Leave any of common credentials empty for auto generate
 
 ## Example Playbook
 
-```yml
+```yaml
     - name: Install IPSec VPN
       hosts: servers
       become: true
